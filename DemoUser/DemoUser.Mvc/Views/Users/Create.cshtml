@@ -1,0 +1,130 @@
+﻿@model DemoUser.Mvc.Models.CreateUserModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create User</h1>
+<hr />
+@*@using (Html.BeginForm())
+    {
+        <div>
+            @Html.TextBoxFor(m => m.FirstName)
+            @Html.TextBoxFor(m => m.LastName)
+            <input type="submit" value="Add experiences" formmethod="post" />
+        </div>
+        <div>
+            @for (var i = 0; i < Model?.Experiences?.Count; i++)
+            {
+                <div>
+                    @Html.TextBoxFor(a => Model.Experiences[i].FromDate)
+                    @Html.TextBoxFor(a => Model.Experiences[i].ToDate)
+                    @Html.TextBoxFor(a => Model.Experiences[i].Position)
+                    @Html.TextBoxFor(a => Model.Experiences[i].CompanyName)
+                </div>
+            }
+        </div>
+    }*@
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-xl-6">
+                    <h4>User Experience</h4>
+                </div>
+                <div class="col-xl-6">
+                    <div class="float-right">
+                        <input type="button" value="Add More Experience" class="btn btn-primary" id="addmorebtn" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input type="hidden" id="hiddenInput" />
+            </div>
+            <div class="MutipleRecord">
+                <div class="row duplicate-row">
+                    <input type="button" value="&#xf014;" class="btn btn-danger btn-remove" />
+                    <div class="col-md-2">
+                        <label for="FromDate">From Date</label>
+                        <input type="date" asp-for="Experiences[Model.IntialCount].FromDate" id="" class="form-control" />
+                    </div>
+						 
+                    <div class="col-xl-2">
+                        <label for="">To Date</label>
+                        <input type="date" asp-for="Experiences[Model.IntialCount].ToDate" id="" class="form-control" />
+                    </div>
+                    <div class="col-xl-3">
+                        <label for="">Position</label>
+                        <input type="text" asp-for="Experiences[Model.IntialCount].Position" id="" class="form-control" />
+                    </div>
+                    <div class="col-xl-3">
+                        <label for="">Company Name</label>
+                        <input type="text" asp-for="Experiences[Model.IntialCount].CompanyName" id="" class="form-control" />
+                    </div>
+						 
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" formaction="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var count = 0;
+            $("#addmorebtn").click(function(){
+                $(".MutipleRecord .duplicate-row:last-child").clone().appendTo(".MutipleRecord");
+                count = count + 1;
+                $('#hiddenInput').val(count);
+            });
+			
+            $(document).on('click','.btn-remove',function(){
+                if($(".MutipleRecord .duplicate-row").length > 1)
+                {
+                    $(this).parents(".duplicate-row").remove();
+                    count = count - 1;
+                    $('#hiddenInput').val(count);
+                }
+            });
+			
+        });
+    </script>
+
+}
